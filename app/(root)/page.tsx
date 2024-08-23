@@ -4,7 +4,9 @@ import TotalBalanceBox from '@/components/shared/TotalBalanceBox'
 import RightSidebar from '@/components/shared/RightSidebar'
 import { getLoggedInUser } from '@/lib/actions/user.actions'
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
+import RecentTransactions from '@/components/shared/RecentTransactions'
 const Home = async({searchParams:{id,page}}:SearchParamProps) => {
+  const currentPage = Number(page as string) || 1
   const loggedIn = await getLoggedInUser()
   const accounts = await getAccounts({userId:loggedIn.$id})
 
@@ -25,11 +27,18 @@ const Home = async({searchParams:{id,page}}:SearchParamProps) => {
           subtext="Access and manage your account and transactions efficiently"
           />
         </header>
+        
 
         <TotalBalanceBox
         accounts={accountsData}
         totalBanks={accounts?.totalBanks}
         totalCurrentBalance={accounts?.totalCurrentBalance}
+        />
+        <RecentTransactions 
+        accounts={accountsData}
+        transactions={account?.transactions}
+        appwriteItemId={appwriteItemId}
+        page={currentPage}
         />
       </div>
 
